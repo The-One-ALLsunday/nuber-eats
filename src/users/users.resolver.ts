@@ -1,4 +1,4 @@
-import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { Query, Args, Mutation, Resolver } from '@nestjs/graphql';
 import {
   CreateAccountInput,
   CreateAccountOutput,
@@ -6,12 +6,11 @@ import {
 import { User } from './entities/user.entity';
 import { UsersService } from './users.service';
 
-Resolver((of) => User);
+@Resolver((of) => User)
 export class UsersResolver {
   constructor(private readonly usersService: UsersService) {}
   @Query((returns) => Boolean)
   hi() {
-    console.log('this is', this);
     return true;
   }
 
@@ -20,7 +19,6 @@ export class UsersResolver {
     @Args('input') createAccountInput: CreateAccountInput,
   ): Promise<CreateAccountOutput> {
     try {
-      console.log('this', this);
       const [ok, error] = await this.usersService.createAccount(
         createAccountInput,
       );
