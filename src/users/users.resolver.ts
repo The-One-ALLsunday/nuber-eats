@@ -1,9 +1,14 @@
-import { Query, Args, Mutation, Resolver, Context } from '@nestjs/graphql';
+import { UseGuards } from '@nestjs/common';
+import { Query, Args, Mutation, Resolver } from '@nestjs/graphql';
+import { AuthUser } from 'src/auth/auth.decorator';
+import { AuthGuard } from 'src/auth/auth.guard';
 import {
   CreateAccountInput,
   CreateAccountOutput,
 } from './dtos/create-account.dto';
+import { EditProfileInput, EditProfileOutput } from './dtos/edit-profile.dto';
 import { LoginInput, LoginOutput } from './dtos/login.dto';
+import { UserProfileInput, UserProfileOutput } from './dtos/user-profile.dto';
 import { User } from './entities/user.entity';
 import { UsersService } from './users.service';
 
@@ -36,10 +41,37 @@ export class UsersResolver {
   }
 
   @Query((returns) => User)
-  me(@Context() context) {
-    if (!context.user) {
-      return;
+  @UseGuards(AuthGuard)
+  me(@AuthUser() authUser: User) {
+    return authUser;
+  }
+
+  @UseGuards(AuthGuard)
+  @Query((returns) => UserProfileOutput)
+  async userProfile(
+    @Args() userProfileInput: UserProfileInput,
+  ): Promise<UserProfileOutput> {
+    try {
+      const user = await this.usersService.findById(userProfileInput.userId);
+      if (!user) {
+        throw Error();
+      }
+      return { ok: Boolean(user), user };
+    } catch (error) {
+      return { error: 'User Not Found ', ok: false };
     }
-    return context.user;
+  }
+
+  @UseGuards(AuthGuard)
+  @Mutation((returns) => EditProfileOutput)
+  async editProfile(
+    @AuthUser() authUser: User,
+    @Args('input') editProfileInput: EditProfileInput,
+  ): Promise<EditProfileOutput> {
+    try {
+      await this.usersService.editProfile(authUser.id, editProfileInput);
+    } catch (error) {
+      return { ok: false, error };
+    }
   }
 }
