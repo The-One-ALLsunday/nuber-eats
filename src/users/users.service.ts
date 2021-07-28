@@ -117,7 +117,8 @@ export class UsersService {
       );
       if (verifition) {
         verifition.user.verified = true;
-        this.users.save(verifition.user);
+        await this.users.save(verifition.user);
+        await this.verifications.delete(verifition.id);
         return { ok: true };
       }
       return { ok: false, error: 'Verification not found' };
