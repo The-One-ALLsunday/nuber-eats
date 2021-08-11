@@ -10,17 +10,13 @@ export class MailService {
     @Inject(CONFIG_OPTIONS) private readonly options: MailModuleOptions,
   ) {}
 
-  private async sendEmail(
+  async sendEmail(
     subject: string,
     content: string,
     email: string,
     code: string,
-  ) {
+  ): Promise<boolean> {
     try {
-      console.log('subject', subject);
-      console.log('content', content);
-      console.log('email', email);
-      console.log('code', code);
       const form = new FormData();
       form.append('apiKey', this.options.apiKey);
       form.append('apiUser', this.options.apiUser);
@@ -28,12 +24,12 @@ export class MailService {
       form.append('to', email);
       form.append('subject', subject);
       form.append('html', `${content} & ${code}`);
-      await got('https://api.sendcloud.net/apiv2/mail/send', {
-        method: 'POST',
+      await got.post('https://api.sendcloud.net/apiv2/mail/send', {
         body: form,
       });
+      return true;
     } catch (error) {
-      console.log(error);
+      return false;
     }
   }
 
