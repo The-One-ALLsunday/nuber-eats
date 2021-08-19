@@ -11,9 +11,16 @@ The Backend of Nuber Eats Clone
 - password
 - role(client|owner|delivery)
 
-## Create Account
+### Create Account
 
 - Log In
 - See Profile
 - Edit Profile
 - Verify Email
+
+## Restaurant Entity
+
+- name
+- category
+- address
+- coverImage
