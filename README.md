@@ -20,7 +20,21 @@ The Backend of Nuber Eats Clone
 
 ## Restaurant Entity
 
+- Edit Restaurant
+- Delete Restaurant
+
 - name
 - category
 - address
 - coverImage
+
+## Category
+
+- see category
+- see restaurants by category(pagination)
+- see restaurants(pagination)
+- see restaurant
+
+- Create Dish
+- Edit Dish
+- delete Dish
