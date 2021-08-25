@@ -9,7 +9,8 @@ type Category {
   name: String!
   coverImg: String
   slug: String!
-  restaurants: [Restaurant!]!
+  restaurants: [Restaurant!]
+  restaurantCount: Int!
 }
 
 """
@@ -72,6 +73,18 @@ type VerifyEmailOutput {
   ok: Boolean!
 }
 
+type AllCategoriesOutput {
+  error: String
+  ok: Boolean!
+  categories: [Category!]
+}
+
+type CategoryOutput {
+  error: String
+  ok: Boolean!
+  category: Category
+}
+
 type CreateRestaurantOutput {
   error: String
   ok: Boolean!
@@ -90,6 +103,8 @@ type EditRestaurantOutput {
 type Query {
   me: User!
   userProfile(userId: Float!): UserProfileOutput!
+  allCategories: AllCategoriesOutput!
+  findCategoryBySlug(slug: String!): CategoryOutput!
 }
 
 type Mutation {
