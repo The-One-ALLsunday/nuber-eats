@@ -38,3 +38,8 @@ The Backend of Nuber Eats Clone
 - Create Dish
 - Edit Dish
 - delete Dish
+
+- Orders CURD
+- Orders Subscription (Owner, Customer, Delivery)
+
+- Payments (CRON)
