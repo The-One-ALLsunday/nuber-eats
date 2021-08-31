@@ -33,7 +33,7 @@ The Backend of Nuber Eats Clone
 - see category
 - see restaurants by category(pagination)
 - see restaurants(pagination)
-- see restaurant
+- search restaurant
 
 - Create Dish
 - Edit Dish
