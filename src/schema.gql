@@ -56,6 +56,19 @@ type Restaurant {
   promotedUntil: DateTime
 }
 
+type OrderItemOption {
+  name: String!
+  choice: String
+}
+
+type OrderItem {
+  id: Float!
+  createAt: DateTime!
+  updateAt: DateTime!
+  dish: Dish!
+  options: [OrderItemOption!]
+}
+
 type Order {
   id: Float!
   createAt: DateTime!
@@ -63,6 +76,7 @@ type Order {
   customer: User
   driver: User
   restaurant: Restaurant
+  items: [OrderItem!]!
   total: Float
   status: OrderStatus!
 }
@@ -184,6 +198,12 @@ type SearchRestaurantOutput {
   restaurants: [Restaurant!]
 }
 
+type CreateOrderOutput {
+  error: String
+  ok: Boolean!
+  orderId: Int
+}
+
 type Query {
   me: User!
   userProfile(userId: Float!): UserProfileOutput!
@@ -223,6 +243,7 @@ type Mutation {
   createDish(input: CreateDishInput!): CreateDishOutput!
   editDish(input: EditDishInput!): EditDishOutput!
   deleteDish(input: DeleteDishInput!): DeleteDishOutput!
+  createOrder(input: CreateOrderInput!): CreateOrderOutput!
 }
 
 input CreateAccountInput {
@@ -293,4 +314,19 @@ input EditDishInput {
 
 input DeleteDishInput {
   dishId: Int!
+}
+
+input CreateOrderInput {
+  restaurantId: Int!
+  items: [CreateOrderItemInput!]!
+}
+
+input CreateOrderItemInput {
+  dishId: Int!
+  options: [OrderItemOptionInputType!]
+}
+
+input OrderItemOptionInputType {
+  name: String!
+  choice: String
 }

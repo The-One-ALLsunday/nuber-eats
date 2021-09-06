@@ -9,7 +9,15 @@ import { IsEnum, IsNumber } from 'class-validator';
 import { CoreEntity } from 'src/common/entities/core.entity';
 import { Restaurant } from 'src/restaurants/entities/restaurant.entity';
 import { User } from 'src/users/entities/user.entity';
-import { Column, Entity, ManyToOne, RelationId } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinTable,
+  ManyToMany,
+  ManyToOne,
+  RelationId,
+} from 'typeorm';
+import { OrderItem } from './order-item.entity';
 
 export enum OrderStatus {
   Pending = 'Pending',
@@ -53,7 +61,12 @@ export class Order extends CoreEntity {
     nullable: true,
     eager: true,
   })
-  restaurant?: Order[];
+  restaurant?: Restaurant;
+
+  @Field((type) => [OrderItem])
+  @ManyToMany((type) => OrderItem, { eager: true })
+  @JoinTable()
+  items: OrderItem[];
 
   @Column({ nullable: true })
   @Field((type) => Float, { nullable: true })
